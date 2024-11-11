@@ -28,16 +28,15 @@ func validateIPAddr(config config.Config, IpAddr string) error {
 		return fmt.Errorf("%s is not in subnet %s\n", IpAddr, subnet.String())
 	}
 
-    splitted := strings.Split(IpAddr, ".")
-    lastOctet, err := strconv.Atoi(splitted[len(splitted) - 1])
-    if err != nil {
-        return err
-    }
+	splitted := strings.Split(IpAddr, ".")
+	lastOctet, err := strconv.Atoi(splitted[len(splitted)-1])
+	if err != nil {
+		return err
+	}
 
-    if lastOctet <= 1 || lastOctet >= 255 {
-        return fmt.Errorf("%s is not allowed! Contact Admin for allowed IP addresses.\n", IpAddr)
-    }
-
+	if lastOctet <= 1 || lastOctet >= 255 {
+		return fmt.Errorf("%s is not allowed! Contact Admin for allowed IP addresses.\n", IpAddr)
+	}
 
 	return nil
 }

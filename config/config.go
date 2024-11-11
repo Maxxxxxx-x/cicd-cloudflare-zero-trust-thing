@@ -14,9 +14,11 @@ type DeploymentConfig struct {
 }
 
 type CFConfig struct {
-	AuthToken string
+	AuthKey   string
 	AccountId string
 	TunnelId  string
+	Email     string
+	ZoneId    string
 }
 
 type Config struct {
@@ -52,9 +54,9 @@ func getDeploymentConfig() (DeploymentConfig, error) {
 }
 
 func getCFConfig() (CFConfig, error) {
-	authToken, found := os.LookupEnv("CF_AUTH_TOKEN")
+	authKey, found := os.LookupEnv("CF_AUTH_KEY")
 	if !found {
-		return CFConfig{}, missingEnv("CF_AUTH_TOKEN")
+		return CFConfig{}, missingEnv("CF_AUTH_KEY")
 	}
 
 	accountId, found := os.LookupEnv("CF_ACCOUNT_ID")
@@ -67,10 +69,22 @@ func getCFConfig() (CFConfig, error) {
 		return CFConfig{}, missingEnv("CF_TUNNEL_ID")
 	}
 
+	email, found := os.LookupEnv("CF_EMAIL")
+	if !found {
+		return CFConfig{}, missingEnv("CF_EMAIL")
+	}
+
+	zoneId, found := os.LookupEnv("CF_ZONE_ID")
+	if !found {
+		return CFConfig{}, missingEnv("CF_ZONE_ID")
+	}
+
 	return CFConfig{
-		AuthToken: authToken,
+		AuthKey:   authKey,
 		AccountId: accountId,
 		TunnelId:  tunnelId,
+		Email:     email,
+		ZoneId:    zoneId,
 	}, nil
 }
 

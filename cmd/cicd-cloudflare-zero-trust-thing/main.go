@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Maxxxxxx-x/cicd-cloudflare-zero-trust-thing/config"
+	c "github.com/Maxxxxxx-x/cicd-cloudflare-zero-trust-thing/config"
 	"github.com/Maxxxxxx-x/cicd-cloudflare-zero-trust-thing/models"
 	"github.com/Maxxxxxx-x/cicd-cloudflare-zero-trust-thing/utils"
 )
@@ -36,7 +36,7 @@ func main() {
 	inputs.DockerIP = rawArgs[1]
 	inputs.DockerPort = rawArgs[2]
 
-	config, err := config.LoadConfig()
+	config, err := c.LoadConfig()
 	if err != nil {
 		log.Fatalln(err.Error())
 		return
@@ -65,4 +65,9 @@ func main() {
 	log.Printf("IP: %s Not in use!\n", inputs.DockerIP)
 
 	fmt.Printf("Branch Name: %s | Docker IP: %s | Docker Port: %s | Hostname: %s\n", inputs.BranchName, inputs.DockerIP, inputs.DockerPort, inputs.Hostname)
+	err = utils.SetZeroTrust(config, inputs)
+	if err != nil {
+		log.Fatalln(err.Error())
+		return
+	}
 }

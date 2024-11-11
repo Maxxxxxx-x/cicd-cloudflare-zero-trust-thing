@@ -53,7 +53,7 @@ func getContainersFromNetwork(apiClient *client.Client, networkId string) (model
 			}
 		}
 
-        if ip, _, _ := net.ParseCIDR(container.IPv6Address); ip != nil {
+		if ip, _, _ := net.ParseCIDR(container.IPv6Address); ip != nil {
 			addrMap[ip.String()] = models.ContainerData{
 
 				Id:   containerId,
