@@ -48,9 +48,9 @@ func main() {
 	}
 
 	if lenArgs == 4 {
-		inputs.Hostname = fmt.Sprintf("%s.%s", rawArgs[3], config.Deployment.BaseDomain)
+		inputs.Hostname = utils.ConvertBranchName(fmt.Sprintf("%s.%s", rawArgs[3], config.Deployment.BaseDomain))
 	} else {
-		inputs.Hostname = fmt.Sprintf("%s.%s", inputs.BranchName, config.Deployment.BaseDomain)
+		inputs.Hostname = utils.ConvertBranchName(fmt.Sprintf("%s.%s", inputs.BranchName, config.Deployment.BaseDomain))
 	}
 
 	isInUse, err := utils.IsAddrInUse(config.Deployment.VLanName, inputs.DockerIP)
