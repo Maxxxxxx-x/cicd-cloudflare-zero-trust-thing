@@ -289,7 +289,7 @@ func SetZeroTrust(config c.Config, input models.Input) error {
 			return err
 		}
 	}
-	if checkRecordIsSame(domainRecord, config.Cloudflare.TunnelId) {
+	if !checkRecordIsSame(domainRecord, config.Cloudflare.TunnelId) {
 		return fmt.Errorf("This domain is used by other project")
 	}
 	if ingress.Hostname != input.Hostname {
