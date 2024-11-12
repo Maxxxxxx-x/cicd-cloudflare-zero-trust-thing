@@ -283,6 +283,15 @@ func SetZeroTrust(config c.Config, input models.Input) error {
 	}
 	ingress := checkHostnameInUsed(&tunnelConfig, input.Hostname)
 	domainRecord := checkRecordExist(dnsRecords, input.Hostname)
+	if domainRecord.Name != input.Hostname {
+		err = addDNSRecord(config.Cloudflare.AuthKey, config.Cloudflare.Email, config.Cloudflare.ZoneId, input.Hostname, config.Cloudflare.TunnelId)
+		if err != nil {
+			return err
+		}
+	}
+	if checkRecordIsSame(domainRecord, config.Cloudflare.TunnelId) {
+		return fmt.Errorf("This domain is used by other project")
+	}
 	if ingress.Hostname != input.Hostname {
 		newIngress := IngressConfig{
 			Hostname:      input.Hostname,
@@ -303,15 +312,6 @@ func SetZeroTrust(config c.Config, input models.Input) error {
 		if err != nil {
 			return err
 		}
-	}
-	if domainRecord.Name != input.Hostname {
-		err = addDNSRecord(config.Cloudflare.AuthKey, config.Cloudflare.Email, config.Cloudflare.ZoneId, input.Hostname, config.Cloudflare.TunnelId)
-		if err != nil {
-			return err
-		}
-	}
-	if checkRecordIsSame(domainRecord, config.Cloudflare.TunnelId) {
-		return fmt.Errorf("This domain is used by other project")
 	}
 	return nil
 }
